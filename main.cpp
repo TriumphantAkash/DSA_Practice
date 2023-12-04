@@ -1,5 +1,6 @@
 #include<iostream>
 #include<queue>
+#include<stack>
 
 using namespace std;
 
@@ -9,6 +10,38 @@ typedef struct  Node
     Node* left;
     Node* right;
 } Node;
+
+
+/* 3 Cases
+Case 1: The node to be deleted doesnt have a child (leaf Node)
+    a) Free the memory
+    b) set parent node's pointer to NULL
+    
+Case 2: The node to be deleted has just one child
+    a) set it's parent link to the only child node
+    b) free the memory of this node 
+
+Case 3: The node to be deleted has 2 children
+    a) replace the node's value either with max in left subtree OR min in right subtree
+    b) delete the duplicate node in left of right subtree (deduced to case 1 or case 2)
+*/
+
+enum child
+{
+    left = 0,
+    right = 1
+};
+
+void DeleteNode(Node* root, int val)
+{
+    Node* prev = root;
+    if(root == NULL)
+    {return;}
+    Node* temp = root;
+    child c;
+
+    
+}
 
 void LevelOrder(Node* root)
 {
@@ -57,6 +90,25 @@ void InOrderTraversal(Node* root)
     InOrderTraversal(root->right);
 }
 
+void iterativeInorderTraversal(Node* cur)
+{
+    stack<Node*> st;
+    while(cur != NULL || !st.empty())
+    {
+        if(cur == NULL)
+        {
+            cur = st.top();
+            st.pop();
+            cout<<cur->data<<endl;
+            cur = cur->right;
+        }
+        else{
+            st.push(cur);
+            cur = cur->left;
+        }
+    }
+}
+
 int main()
 {
     Node* temp1 = (Node*)malloc(sizeof(Node));
@@ -97,6 +149,8 @@ int main()
     cout<<"In order Traversal: "<<endl;
     InOrderTraversal(temp1);
 
+    cout<<"Iterative inorder traversal: "<<endl;
+    iterativeInorderTraversal(temp1);
     cout<< "is this BST ? : "<<(isBST(temp1)?("Yes"):("No"));
     return 0;
 }
